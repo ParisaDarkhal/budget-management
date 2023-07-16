@@ -24,10 +24,13 @@ User.init(
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        is: /^[a-zA-Z0-9]+$/,
-        len: [8],
-      },
+      // validate: {
+      //   is: /^[a-zA-Z0-9]+$/,
+      //   len: [8],
+      // },
+    },
+    budget: {
+      type: DataTypes.INTEGER,
     },
   },
 
