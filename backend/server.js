@@ -53,7 +53,7 @@ app.get("/", async (req, res) => {
 app.get("/users", async (req, res) => {
   try {
     const users = await User.findAll();
-    console.log("users :>> ", users);
+
     res.json(users);
   } catch (error) {
     console.error(error);
@@ -94,7 +94,7 @@ app.post("/users/signup", async (req, res) => {
 });
 
 // update a user
-app.put("/users/:id", async (req, res) => {
+app.put("/users/update/:id", async (req, res) => {
   try {
     const userId = req.params.id;
     const updateData = req.body;
@@ -111,7 +111,7 @@ app.put("/users/:id", async (req, res) => {
 });
 
 // delete a user
-app.delete("/users/:id", async (req, res) => {
+app.delete("/users/delete/:id", async (req, res) => {
   try {
     const userId = req.params.id;
     const deletedUser = await User.destroy({ where: { id: userId } });
@@ -121,6 +121,91 @@ app.delete("/users/:id", async (req, res) => {
     res.status(500).json({ message: "Server problem!" });
   }
 });
+
+/////////
+// get all categories
+app.get("/categories", async (req, res) => {
+  try {
+    const categories = await Category.findAll();
+    res.json(categories);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server problem!" });
+  }
+});
+
+// get a category by id
+app.get("/categories/:id", async (req, res) => {
+  try {
+    const categoryId = req.params.id;
+    const category = await Category.findOne({ where: { id: categoryId } });
+    if (category) {
+      res.json(category);
+    } else {
+      res.status(400).json({ message: "Category not found!" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server problem!" });
+  }
+});
+
+// create a category
+app.post("/categories/create", async (req, res) => {
+  try {
+    const name = req.body.name;
+    const type = req.body.type;
+    const newCategory = await Category.create({
+      name: name,
+      type: type,
+    });
+    res.json(newCategory);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server problem!" });
+  }
+});
+
+// update a category
+app.put("/categories/update/:id", async (req, res) => {
+  try {
+    const categoryId = req.params.id;
+    const updateData = req.body;
+    const category = await Category.update(updateData, {
+      where: { id: categoryId },
+    });
+    if (category) {
+      res.json({ message: "Category successfully updated!" });
+    } else {
+      res.status(404).json({ message: "Category not found!" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server problem!" });
+  }
+});
+
+// delete a category
+app.delete("/categories/delete/:id", async (req, res) => {
+  try {
+    const categoryId = req.params.id;
+    const deletedCategory = await Category.destroy({
+      where: {
+        id: categoryId,
+      },
+    });
+    if (deletedCategory) {
+      res.json({ message: "Category deleted." });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server problem!" });
+  }
+});
+
+//////////
+// get all costs
+
 ////////////////////////////////////////////////////////////////////////////
 
 // Starts the server to begin listening: first we need to connect to the database and then run the server
