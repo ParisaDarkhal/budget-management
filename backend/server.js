@@ -341,6 +341,27 @@ app.post("/costs/users", async (req, res) => {
   }
 });
 
+// get costs by userId, for a category
+app.post("/costs/month", async (req, res) => {
+  try {
+    const userId = req.body.userId;
+    const costsInAMonth = await Cost.findAll({
+      where: {
+        user_id: userId,
+        month: req.body.month,
+      },
+      include: [{ model: Category }],
+    });
+    if (!costsInAMonth) {
+      res.status(400).json({ message: "User not found!" });
+    } else {
+      res.json(costsInAMonth);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server problem!" });
+  }
+});
 ////////////////////////////////////////////////////////////////////////////
 
 // Starts the server to begin listening: first we need to connect to the database and then run the server
