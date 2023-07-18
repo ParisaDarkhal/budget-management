@@ -3,31 +3,13 @@ const Category = require("./Category");
 const Cost = require("./Cost");
 const Goal = require("./Goal");
 
-// User.hasMany(Cost, {
-//   foreignKey: "user_id",
-//   onDelete: "CASCADE",
-// });
+User.hasMany(Cost);
+Cost.belongsTo(User);
 
-Cost.belongsTo(User, {
-  foreignKey: "user_id",
-});
+Category.hasOne(Cost);
+Cost.belongsTo(Category);
 
-Cost.hasOne(Category, {
-  foreignKey: "category_id",
-  onDelete: "CASCADE",
-});
-
-Category.belongsTo(Cost, {
-  foreignKey: "category_id",
-});
-
-// User.hasMany(Goal, {
-//   foreignKey: "user_id",
-//   onDelete: "CASCADE",
-// });
-
-Goal.belongsTo(User, {
-  foreignKey: "user_id",
-});
+User.hasMany(Goal);
+Goal.belongsTo(User);
 
 module.exports = { User, Category, Cost, Goal };
