@@ -8,6 +8,7 @@ const controllers = require("./controllers");
 const sequelize = require("./config/connection");
 // const helpers = require("./utils/helpers");
 const User = require("./models/User");
+const { where } = require("sequelize");
 
 const PORT = process.env.PORT || 3001;
 
@@ -50,8 +51,7 @@ app.post("/auth", async (req, res) => {
   try {
     const { username, password } = req.body;
     console.log("req.body :>> ", req.body);
-    const user = await User.findOne({ username });
-    console.log("user :>> ", user);
+    const user = await User.findOne({ where: { username: username } });
     if (!user) {
       throw new Error("Invalid Credentials!");
     }

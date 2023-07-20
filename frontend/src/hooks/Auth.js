@@ -52,6 +52,13 @@ export const AuthProvider = ({ children }) => {
     }
   }, []); // Empty dependency array to run the effect only once
 
+  useEffect(() => {
+    // Update storage when user or isAuthenticated changes
+    /* store user data and isAuthenticated state in storage */
+    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("isAuthenticated", JSON.stringify(isAuthenticated));
+  }, [user, isAuthenticated]);
+
   return (
     <AuthContext.Provider value={{ user, isAuthenticated, login, logout }}>
       {children}

@@ -28,6 +28,10 @@ export default function Navbar() {
   const [password, setPassword] = useState(""); // State for password
   const navigate = useNavigate();
 
+  const handleLogin = () => {
+    login(username, password);
+  };
+
   const handleLogout = () => {
     logout();
   };
@@ -62,7 +66,7 @@ export default function Navbar() {
           <Box>
             {isAuthenticated ? (
               <div>
-                <span>Welcome, {user.first_name}!</span>
+                <span>Welcome, {username}!</span>
                 <Button
                   sx={{ ml: 5 }}
                   href="/"
@@ -74,7 +78,7 @@ export default function Navbar() {
               </div>
             ) : (
               <div>
-                <Button href="/login" color="inherit">
+                <Button href="/login" color="inherit" onClick={handleLogin}>
                   Log in
                 </Button>
               </div>
