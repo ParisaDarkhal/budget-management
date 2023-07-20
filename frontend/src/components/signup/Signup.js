@@ -9,14 +9,14 @@ import {
   Box,
   Typography,
   Container,
+  Alert,
 } from "@mui/material";
 import { LockOutlined as LockOutlinedIcon } from "@mui/icons-material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import Navbar from "../navbar/Navbar";
+import { signup } from "../../api/API";
 
 function Copyright(props) {
   return (
@@ -45,43 +45,35 @@ const defaultTheme = createTheme();
 
 export default function SignUp() {
   const navigate = useNavigate();
-  /////
-  const [formState, setFormState] = useState({
-    first_name: "",
-    last_name: "",
-    username: "",
-    email: "",
-    password: "",
-    address: "",
-  });
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [hasError, setHasError] = useState(false);
 
   //   const [addUser, { error }] = useMutation(ADD_USER);
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormState({ ...formState, [name]: value });
+  const handleUsernameInputChange = (event) => {
+    setUsername(event.target.value);
+  };
+
+  const handlePasswordInputChange = (event) => {
+    setPassword(event.target.value);
   };
   /////
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // try {
-    //   const { data } = await addUser({
-    //     variables: { input: { ...formState } },
-    //   });
-    //   navigate(`/login`);
-    // } catch (err) {
-    //   console.error(err);
-    // }
-
-    // setFormState({
-    //   first_name: "",
-    //   last_name: "",
-    //   username: "",
-    //   email: "",
-    //   password: "",
-    //   address: "",
-    // });
+    try {
+      const data = await signup(username, password);
+      console.log("data :>> ", data);
+      if (data.error) {
+        setHasError(true);
+        navigate("/signup");
+        // show a error message to user
+      } else {
+        navigate("/login");
+      }
+    } catch (error) {}
   };
 
   return (
@@ -121,31 +113,6 @@ export default function SignUp() {
               </Grid>
             </Grid>
             <Grid container spacing={1}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="first_name"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                  value={formState.first_name}
-                  onChange={handleInputChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="last_name"
-                  autoComplete="family-name"
-                  value={formState.last_name}
-                  onChange={handleInputChange}
-                />
-              </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
@@ -154,22 +121,11 @@ export default function SignUp() {
                   label="Username"
                   name="username"
                   autoComplete="username"
-                  value={formState.username}
-                  onChange={handleInputChange}
+                  value={username}
+                  onChange={handleUsernameInputChange}
                 />
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  value={formState.email}
-                  onChange={handleInputChange}
-                />
-              </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   required
@@ -179,20 +135,8 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
-                  value={formState.password}
-                  onChange={handleInputChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="address"
-                  label="Mailing Address"
-                  name="address"
-                  autoComplete="address"
-                  value={formState.address}
-                  onChange={handleInputChange}
+                  value={password}
+                  onChange={handlePasswordInputChange}
                 />
               </Grid>
             </Grid>
@@ -206,6 +150,9 @@ export default function SignUp() {
             </Button>
           </Box>
         </Box>
+        {hasError && (
+          <Alert severity="error">This is an error alert — check it out!</Alert>
+        )}
         <Copyright sx={{ mt: 3 }} />
       </Container>
     </ThemeProvider>
