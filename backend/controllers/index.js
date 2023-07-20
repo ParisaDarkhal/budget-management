@@ -1,8 +1,9 @@
-const router = require("express").Router();
+// const router = require("express").Router();
 const users = require("./users");
 const categories = require("./categories");
 const goals = require("./goals");
 const costs = require("./costs");
+const router = require("./users");
 
 router.use("/users", users);
 router.use("/categories", categories);

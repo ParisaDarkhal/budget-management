@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { useMutation } from "@apollo/client";
-import { LOGIN_MUTATION } from "../utils/mutations"; // Import your GraphQL mutation
+import axios from "axios"; // Import Axios for making HTTP requests
 
 // Create the AuthContext to hold the user and isAuthenticated state
 const AuthContext = createContext();
@@ -8,37 +7,36 @@ const AuthContext = createContext();
 // AuthProvider component to wrap your app
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-
-  // Check if the user is authenticated based on user state
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  // GraphQL login mutation
-  const [loginMutation] = useMutation(LOGIN_MUTATION, {
-    onCompleted: (data) => {
-      console.log("datafromlogin :>> ", data);
-      const { loginMutation } = data; // Update with the appropriate response fields from your GraphQL server
-      setUser(loginMutation);
-      setIsAuthenticated(true);
-      localStorage.setItem("user", JSON.stringify(loginMutation));
-      localStorage.setItem("isAuthenticated", JSON.stringify(true));
-    },
-    onError: (error) => {
-      console.error("Login error:", error); // Handle and display the error
-    },
-  });
 
   // Login function
   const login = async (username, password) => {
+    console.log("username :>> ", username);
+    console.log("password :>> ", password);
     try {
-      const { data } = await loginMutation({
-        variables: { username, password },
+      const response = await axios.post("/auth", {
+        username,
+        password,
       });
-      console.log("dataInAuth :>> ", data);
 
-      // Handle the response from the login mutation in the onCompleted callback
+      const data = response.data;
+
+      // Assuming your REST API returns user data upon successful login
+      setUser(data);
+      setIsAuthenticated(true);
+      localStorage.setItem("user", JSON.stringify(data));
+      localStorage.setItem("isAuthenticated", JSON.stringify(true));
     } catch (error) {
       console.error("Login error:", error); // Handle and display the error
     }
+  };
+
+  // Logout function
+  const logout = () => {
+    setUser(null);
+    setIsAuthenticated(false);
+    localStorage.removeItem("user");
+    localStorage.removeItem("isAuthenticated");
   };
 
   useEffect(() => {
@@ -53,19 +51,6 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(storedIsAuthenticated);
     }
   }, []); // Empty dependency array to run the effect only once
-
-  useEffect(() => {
-    // Update storage when user or isAuthenticated changes
-    /* store user data and isAuthenticated state in storage */
-    localStorage.setItem("user", JSON.stringify(user));
-    localStorage.setItem("isAuthenticated", JSON.stringify(isAuthenticated));
-  }, [user, isAuthenticated]);
-
-  // Logout function
-  const logout = () => {
-    setUser(null);
-    setIsAuthenticated(false);
-  };
 
   return (
     <AuthContext.Provider value={{ user, isAuthenticated, login, logout }}>

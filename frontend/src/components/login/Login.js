@@ -18,7 +18,7 @@ import { LockOutlined as LockOutlinedIcon } from "@mui/icons-material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { useAuth } from "../../hooks/Auth";
+import { useAuth } from "../../hooks/Auth";
 import Navbar from "../navbar/Navbar";
 
 function Copyright(props) {
@@ -52,7 +52,7 @@ export default function SignIn() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [open, setOpen] = useState(false);
-  //   const { user, isAuthenticated, login } = useAuth();
+  const { user, isAuthenticated, login } = useAuth();
   console.log("user :>> ", user);
   if (user) {
     navigate("/dashboard");
@@ -61,7 +61,8 @@ export default function SignIn() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    await login(username, password);
+    const data = await login(username, password);
+    console.log("data :>> ", data);
     if (!user) {
       setOpen(true);
       setUsername("");

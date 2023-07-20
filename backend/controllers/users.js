@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const { User } = require("../models");
 
 // get all users
-router.get("/users", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const users = await User.findAll();
 
@@ -15,7 +15,7 @@ router.get("/users", async (req, res) => {
 });
 
 // get a user by id
-router.get("/users/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const userId = req.params.id;
     const user = await User.findOne({ where: { id: userId } });
@@ -30,31 +30,8 @@ router.get("/users/:id", async (req, res) => {
   }
 });
 
-// user login
-router.post("/users/login", async (req, res) => {
-  try {
-    /////
-    const username = req.body.username;
-    const password = req.body.password;
-    /////
-    const user = await User.findOne({ username });
-    if (!user) {
-      throw new Error("Invalid Credentials!");
-    }
-    // verify password
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      throw new Error("Invalid Credentials!");
-    }
-    return user;
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server problem!" });
-  }
-});
-
 // create a user
-router.post("/users/signup", async (req, res) => {
+router.post("/signup", async (req, res) => {
   try {
     const username = req.body.username;
     const password = req.body.password;
@@ -70,7 +47,7 @@ router.post("/users/signup", async (req, res) => {
 });
 
 // update a user
-router.put("/users/update/:id", async (req, res) => {
+router.put("/update/:id", async (req, res) => {
   try {
     const userId = req.params.id;
     const updateData = req.body;
@@ -87,7 +64,7 @@ router.put("/users/update/:id", async (req, res) => {
 });
 
 // delete a user
-router.delete("/users/delete/:id", async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   try {
     const userId = req.params.id;
     const deletedUser = await User.destroy({ where: { id: userId } });

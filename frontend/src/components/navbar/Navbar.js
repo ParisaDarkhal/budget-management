@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { styled } from "@mui/material/styles";
-// import { useAuth } from "../../hooks/Auth";
+import { useAuth } from "../../hooks/Auth";
 import { useNavigate } from "react-router-dom";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -23,18 +23,14 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 export default function Navbar() {
-  //   const { user, isAuthenticated, login, logout } = useAuth();
+  const { user, isAuthenticated, login, logout } = useAuth();
   const [username, setUsername] = useState(""); // State for username
   const [password, setPassword] = useState(""); // State for password
   const navigate = useNavigate();
 
-  //   const handleLogin = () => {
-  //     login(username, password);
-  //   };
-
-  //   const handleLogout = () => {
-  //     logout();
-  //   };
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -64,7 +60,7 @@ export default function Navbar() {
             </Button>
           </Typography>
           <Box>
-            {/* {isAuthenticated ? (
+            {isAuthenticated ? (
               <div>
                 <span>Welcome, {user.first_name}!</span>
                 <Button
@@ -78,11 +74,11 @@ export default function Navbar() {
               </div>
             ) : (
               <div>
-                <Button href="/login" color="inherit" onClick={handleLogin}>
+                <Button href="/login" color="inherit">
                   Log in
                 </Button>
               </div>
-            )} */}
+            )}
           </Box>
         </Toolbar>
       </AppBar>

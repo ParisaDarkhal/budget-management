@@ -1,5 +1,5 @@
 const express = require("express"); //
-
+const bcrypt = require("bcrypt");
 const path = require("path"); //
 const session = require("express-session");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
@@ -7,6 +7,7 @@ const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const controllers = require("./controllers");
 const sequelize = require("./config/connection");
 // const helpers = require("./utils/helpers");
+const User = require("./models/User");
 
 const PORT = process.env.PORT || 3001;
 
@@ -33,6 +34,7 @@ app.use(
 
 // to make it possible to make a POST request
 app.use(express.json());
+
 app.use(express.urlencoded({ extended: true }));
 
 // To access the public/front-end content!
@@ -43,6 +45,27 @@ app.get("/", async (req, res) => {
 });
 
 app.use(controllers);
+// user login
+app.post("/auth", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    console.log("req.body :>> ", req.body);
+    const user = await User.findOne({ username });
+    console.log("user :>> ", user);
+    if (!user) {
+      throw new Error("Invalid Credentials!");
+    }
+    // verify password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      throw new Error("Invalid Credentials!");
+    }
+    return user;
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server problem!" });
+  }
+});
 
 // Starts the server to begin listening: first we need to connect to the database and then run the server
 // false can be turned to true ONLY first time when I want to make the database

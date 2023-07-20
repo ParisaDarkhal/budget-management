@@ -2,7 +2,7 @@ const router = require("express").Router();
 const { Cost, Category } = require("../models");
 
 // get all costs for a user in one specific category: 1-if not give month => for all times 2-if give month => for specific month (gets the request as a json object and returns an array) and includes the category data
-router.post("/costs/users", async (req, res) => {
+router.post("/users", async (req, res) => {
   try {
     const userId = req.body.userId;
     if (req.body.month) {
@@ -40,7 +40,7 @@ router.post("/costs/users", async (req, res) => {
 });
 
 // get costs by userId, for a category
-router.post("/costs/month", async (req, res) => {
+router.post("/month", async (req, res) => {
   try {
     const userId = req.body.userId;
     const costsInAMonth = await Cost.findAll({
