@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const bcrypt = require("bcrypt");
 const { User } = require("../models");
 
 // get all users
@@ -23,6 +24,29 @@ router.get("/users/:id", async (req, res) => {
     } else {
       res.status(400).json({ message: "User not found!" });
     }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server problem!" });
+  }
+});
+
+// user login
+router.post("/users/login", async (req, res) => {
+  try {
+    /////
+    const username = req.body.username;
+    const password = req.body.password;
+    /////
+    const user = await User.findOne({ username });
+    if (!user) {
+      throw new Error("Invalid Credentials!");
+    }
+    // verify password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      throw new Error("Invalid Credentials!");
+    }
+    return user;
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server problem!" });
