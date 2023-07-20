@@ -53,7 +53,6 @@ export default function SignIn() {
   const [password, setPassword] = useState("");
   const [open, setOpen] = useState(false);
   const { user, isAuthenticated, login } = useAuth();
-  console.log("user :>> ", user);
   if (user) {
     navigate("/dashboard");
   }

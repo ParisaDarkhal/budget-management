@@ -13,24 +13,11 @@ import { styled } from "@mui/material/styles";
 import { useAuth } from "../../hooks/Auth";
 import { useNavigate } from "react-router-dom";
 
-const StyledBadge = styled(Badge)(({ theme }) => ({
-  "& .MuiBadge-badge": {
-    right: -1,
-    top: 0,
-    border: `2px solid ${theme.palette.background.paper}`,
-    padding: "0 4px",
-  },
-}));
-
 export default function Navbar() {
   const { user, isAuthenticated, login, logout } = useAuth();
   const [username, setUsername] = useState(""); // State for username
   const [password, setPassword] = useState(""); // State for password
   const navigate = useNavigate();
-
-  const handleLogin = () => {
-    login(username, password);
-  };
 
   const handleLogout = () => {
     logout();
@@ -38,7 +25,7 @@ export default function Navbar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed">
+      <AppBar position="fixed" style={{ background: "#2E3B55" }}>
         <Toolbar sx={{ flexGrow: 1, display: { xs: "flex", md: "flex" } }}>
           <IconButton
             size="large"
@@ -66,10 +53,10 @@ export default function Navbar() {
           <Box>
             {isAuthenticated ? (
               <div>
-                <span>Welcome, {username}!</span>
+                <span>Welcome, {user.username}!</span>
                 <Button
                   sx={{ ml: 5 }}
-                  href="/"
+                  href="/login"
                   color="inherit"
                   onClick={handleLogout}
                 >
@@ -78,7 +65,7 @@ export default function Navbar() {
               </div>
             ) : (
               <div>
-                <Button href="/login" color="inherit" onClick={handleLogin}>
+                <Button href="/login" color="inherit">
                   Log in
                 </Button>
               </div>

@@ -60,7 +60,7 @@ app.post("/auth", async (req, res) => {
     if (!isPasswordValid) {
       throw new Error("Invalid Credentials!");
     }
-    return user;
+    res.send(user);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server problem!" });

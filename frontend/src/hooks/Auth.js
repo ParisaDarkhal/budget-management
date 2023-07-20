@@ -11,14 +11,13 @@ export const AuthProvider = ({ children }) => {
 
   // Login function
   const login = async (username, password) => {
-    console.log("username :>> ", username);
-    console.log("password :>> ", password);
     try {
       const response = await axios.post("/auth", {
         username,
         password,
       });
 
+      console.log("data================= :>> ", response);
       const data = response.data;
 
       // Assuming your REST API returns user data upon successful login
