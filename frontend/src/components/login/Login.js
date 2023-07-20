@@ -61,7 +61,6 @@ export default function SignIn() {
     event.preventDefault();
 
     const data = await login(username, password);
-    console.log("data :>> ", data);
     if (!user) {
       setOpen(true);
       setUsername("");

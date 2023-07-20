@@ -65,7 +65,6 @@ export default function SignUp() {
     event.preventDefault();
     try {
       const data = await signup(username, password);
-      console.log("data :>> ", data);
       if (data.error) {
         setHasError(true);
         navigate("/signup");
@@ -151,7 +150,9 @@ export default function SignUp() {
           </Box>
         </Box>
         {hasError && (
-          <Alert severity="error">This is an error alert — check it out!</Alert>
+          <Alert severity="error">
+            Sorry! This username is taken. Please try with a different username.
+          </Alert>
         )}
         <Copyright sx={{ mt: 3 }} />
       </Container>
