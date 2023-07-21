@@ -95,8 +95,19 @@ const months = [
     label: "December",
   },
 ];
+////////////////////////////////////////////////////////////
+const handleSave = async () => {};
 
+////////////////////////////////////////////////////////////
 const Dashboard = () => {
+  //////////////////////////
+  const [category, setCategory] = useState("");
+  const [goal, setGoal] = useState("");
+  const [goalPrice, setGoalPrice] = useState(0);
+  const [costPrice, setCostPrice] = useState(0);
+  const [categoryType, setCategoryType] = useState("");
+  console.log("categoryType :>> ", categoryType);
+  //////////////////////////
   return (
     <Box>
       <Navbar />
@@ -125,16 +136,20 @@ const Dashboard = () => {
                 id="filled-basic"
                 label="Category Name"
                 variant="filled"
+                name="category"
+                value={category}
+                onChange={(event) => setCategory(event.target.value)}
               />
-              {/* something */}
+
               <FormControl>
                 <FormLabel id="demo-radio-buttons-group-label">
                   Category Type
                 </FormLabel>
                 <RadioGroup
                   aria-labelledby="demo-radio-buttons-group-label"
-                  defaultValue="Fixed"
                   name="radio-buttons-group"
+                  value={categoryType}
+                  onChange={(event) => setCategoryType(event.target.value)}
                 >
                   <FormControlLabel
                     value="fixed"
@@ -148,9 +163,10 @@ const Dashboard = () => {
                   />
                 </RadioGroup>
               </FormControl>
-              {/* somethig */}
             </Box>
-            <Button variant="contained">Save</Button>
+            <Button variant="contained" onClick={handleSave}>
+              Save
+            </Button>
           </Grid>
 
           <Grid item xs={2} sm={4} md={4} boxShadow={5}>
@@ -168,10 +184,26 @@ const Dashboard = () => {
               autoComplete="off"
               mt={2}
             >
-              <TextField id="filled-basic" label="Goal Name" variant="filled" />
-              <TextField id="filled-basic" label="Price" variant="filled" />
+              <TextField
+                id="filled-basic"
+                label="Goal Name"
+                variant="filled"
+                name="goal"
+                value={goal}
+                onChange={(event) => setGoal(event.target.value)}
+              />
+              <TextField
+                id="filled-basic"
+                label="Price"
+                variant="filled"
+                name="price"
+                value={goalPrice}
+                onChange={(event) => setGoalPrice(event.target.value)}
+              />
             </Box>
-            <Button variant="contained">Save</Button>
+            <Button variant="contained" onClick={handleSave}>
+              Save
+            </Button>
           </Grid>
 
           <Grid item xs={2} sm={4} md={4} boxShadow={5}>
@@ -217,9 +249,16 @@ const Dashboard = () => {
                 ))}
               </TextField>
 
-              <TextField id="filled-basic" label="Price" variant="filled" />
+              <TextField
+                id="filled-basic"
+                label="Price"
+                variant="filled"
+                name="price"
+                value={costPrice}
+                onChange={(event) => setCostPrice(event.target.value)}
+              />
             </Box>
-            <Button variant="contained" sx={{ mb: 3 }}>
+            <Button variant="contained" sx={{ mb: 3 }} onClick={handleSave}>
               Save
             </Button>
           </Grid>
