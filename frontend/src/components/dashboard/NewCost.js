@@ -95,12 +95,11 @@ const months = [
     label: "December",
   },
 ];
-////////////////////////////////////////////////////////////
-const handleSave = async () => {};
 
-////////////////////////////////////////////////////////////
 const NewCostAddition = () => {
   const [costPrice, setCostPrice] = useState(0);
+
+  const handleSave = async () => {};
 
   return (
     <Grid item xs={2} sm={4} md={4} boxShadow={5}>

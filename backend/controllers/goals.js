@@ -55,11 +55,11 @@ router.get("/goalByUserId/:user_id", async (req, res) => {
 router.post("/create", async (req, res) => {
   try {
     const updateData = req.body;
-    const newUser = await Goal.create(updateData);
-    if (!newUser) {
+    const newGoal = await Goal.create(updateData);
+    if (!newGoal) {
       res.json({ message: "Some problem happenned" });
     } else {
-      res.status(200).json({ message: "Goal successfully created!" });
+      res.json({ status: "success" });
     }
   } catch (error) {
     console.error(error);
