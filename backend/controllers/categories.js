@@ -37,7 +37,7 @@ router.post("/create", async (req, res) => {
       name: name,
       type: type,
     });
-    res.json(newCategory);
+    res.json({ status: "success" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server problem!" });

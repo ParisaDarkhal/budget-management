@@ -11,3 +11,15 @@ export async function signup(username, password) {
     return { error: "could not create user" };
   }
 }
+
+export async function addNewCategory(category, categoryType) {
+  try {
+    const response = await axios.post("/categories/create", {
+      name: category,
+      type: categoryType,
+    });
+    return response.data;
+  } catch (error) {
+    return { status: "error", message: "Could not create new category" };
+  }
+}
