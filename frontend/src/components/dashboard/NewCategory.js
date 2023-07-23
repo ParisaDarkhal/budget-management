@@ -5,7 +5,6 @@ import {
   Button,
   Paper,
   TextField,
-  MenuItem,
   Radio,
   RadioGroup,
   FormControl,
@@ -15,8 +14,7 @@ import {
 import { experimentalStyled as styled } from "@mui/material/styles";
 
 import React from "react";
-import Navbar from "../navbar/Navbar";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { addNewCategory } from "../../api/API";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -47,7 +45,7 @@ const NewCategoryAddition = () => {
   return (
     <>
       <ToastContainer
-        position="bottom-left"
+        position="bottom-center"
         autoClose={2000}
         hideProgressBar={false}
         newestOnTop={false}

@@ -6,16 +6,10 @@ import {
   Paper,
   TextField,
   MenuItem,
-  Radio,
-  RadioGroup,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
 } from "@mui/material";
 import { experimentalStyled as styled } from "@mui/material/styles";
-import Navbar from "../navbar/Navbar";
-import React, { useState, useContext, useEffect } from "react";
-import { getCategories } from "../../api/API";
+import React, { useState, useEffect } from "react";
+import { getCategories, addNewCost } from "../../api/API";
 import { useAuth } from "../../hooks/Auth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -85,6 +79,7 @@ const NewCostAddition = () => {
   const [month, setMonth] = useState("");
   const [allCategories, setAllCategories] = useState([]);
   const [categoryId, setCategoryId] = useState(0);
+  const { user } = useAuth();
 
   useEffect(() => {
     const getCats = async () => {
@@ -100,74 +95,99 @@ const NewCostAddition = () => {
     label: item.name,
   }));
 
-  console.log("categoryId :>> ", categoryId);
-  const handleSave = async () => {};
+  const handleCategroyChange = (event) => {
+    const selectedCategoryId = event.target.value;
+    setCategory(event.target.value);
+    setCategoryId(selectedCategoryId);
+  };
+
+  const handleSave = async (event) => {
+    try {
+      const userId = user.id;
+      const data = await addNewCost(categoryId, userId, month, costPrice);
+      if (data.status === "success") {
+        toast.success("New cost saved!");
+      } else if (data.status === "error") {
+        toast.error(data.message);
+      }
+    } catch (error) {}
+  };
 
   return (
-    <Grid item xs={2} sm={4} md={4} boxShadow={5}>
-      <Item sx={{ mr: 3 }}>
-        <Typography variant="h5" gutterBottom>
-          Add A New Cost
-        </Typography>
-      </Item>
-      <Box
-        component="form"
-        sx={{
-          "& > :not(style)": { m: 1, width: "25ch" },
-        }}
-        noValidate
-        autoComplete="off"
-        mt={2}
-      >
-        <TextField
-          id="outlined-select-category"
-          select
-          label="Select"
-          defaultValue="Rent"
-          helperText="Please select category"
-          value={category}
-          onChange={(event) => setCategory(event.target.value)}
+    <>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <Grid item xs={2} sm={4} md={4} boxShadow={5}>
+        <Item sx={{ mr: 3 }}>
+          <Typography variant="h5" gutterBottom>
+            Add A New Cost
+          </Typography>
+        </Item>
+        <Box
+          component="form"
+          sx={{
+            "& > :not(style)": { m: 1, width: "25ch" },
+          }}
+          noValidate
+          autoComplete="off"
+          mt={2}
         >
-          {categories.map((option) => (
-            <MenuItem
-              onChange={(event) => setCategoryId(option.value)}
-              key={option.value}
-              value={option.value}
-            >
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
+          <TextField
+            id="outlined-select-category"
+            select
+            label="Select"
+            defaultValue="Rent"
+            helperText="Please select category"
+            value={category}
+            onChange={handleCategroyChange}
+          >
+            {categories.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
 
-        <TextField
-          id="outlined-select-month"
-          select
-          label="Select"
-          defaultValue="January"
-          helperText="Please select month"
-          value={month}
-          onChange={(event) => setMonth(event.target.value)}
-        >
-          {months.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
+          <TextField
+            id="outlined-select-month"
+            select
+            label="Select"
+            defaultValue="January"
+            helperText="Please select month"
+            value={month}
+            onChange={(event) => setMonth(event.target.value)}
+          >
+            {months.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
 
-        <TextField
-          id="filled-basic"
-          label="Price"
-          variant="filled"
-          name="price"
-          value={costPrice}
-          onChange={(event) => setCostPrice(event.target.value)}
-        />
-      </Box>
-      <Button variant="contained" sx={{ mb: 3 }} onClick={handleSave}>
-        Save
-      </Button>
-    </Grid>
+          <TextField
+            id="filled-basic"
+            label="Price"
+            variant="filled"
+            name="price"
+            value={costPrice}
+            onChange={(event) => setCostPrice(event.target.value)}
+          />
+        </Box>
+        <Button variant="contained" sx={{ mb: 3 }} onClick={handleSave}>
+          Save
+        </Button>
+      </Grid>
+    </>
   );
 };
 

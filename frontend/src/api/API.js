@@ -46,9 +46,15 @@ export async function getCategories() {
   }
 }
 
-export async function addNewCost(category_id, user_id, month, price) {
+export async function addNewCost(categoryId, userId, month, costPrice) {
   try {
-    const response = await axios.post("/costs/create", {});
+    const response = await axios.post("/costs/create", {
+      category_id: categoryId,
+      user_id: userId,
+      month: month,
+      amount: costPrice,
+    });
+    return response.data;
   } catch (error) {
     return { status: "error", message: "Could not create new cost" };
   }

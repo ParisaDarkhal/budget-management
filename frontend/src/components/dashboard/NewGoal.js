@@ -1,22 +1,8 @@
-import {
-  Box,
-  Typography,
-  Grid,
-  Button,
-  Paper,
-  TextField,
-  MenuItem,
-  Radio,
-  RadioGroup,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-} from "@mui/material";
+import { Box, Typography, Grid, Button, Paper, TextField } from "@mui/material";
 import { experimentalStyled as styled } from "@mui/material/styles";
 
 import React from "react";
-import Navbar from "../navbar/Navbar";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { addNewGoal } from "../../api/API";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
