@@ -38,8 +38,8 @@ const NewGoalAddition = ({ toast }) => {
   return (
     <>
       <Grid item xs={2} sm={4} md={4} boxShadow={5}>
-        <Item sx={{ mr: 3 }}>
-          <Typography variant="h5" gutterBottom>
+        <Item sx={{ mr: 3, mt: -2 }}>
+          <Typography variant="h6" gutterBottom>
             Add A Goal
           </Typography>
         </Item>
