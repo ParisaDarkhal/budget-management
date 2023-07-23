@@ -61,4 +61,15 @@ router.post("/month", async (req, res) => {
   }
 });
 
+// create a cost for a user
+router.post("/create", async (req, res) => {
+  try {
+    const newCostData = req.body;
+    const newCost = await Cost.create(newCostData);
+    res.json({ status: "success" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server problem!" });
+  }
+});
 module.exports = router;

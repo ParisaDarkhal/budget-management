@@ -36,3 +36,20 @@ export async function addNewGoal(goal, goalPrice, userId) {
     return { status: "error", message: "Could not create new goal" };
   }
 }
+
+export async function getCategories() {
+  try {
+    const response = await axios.get("/categories");
+    return response.data;
+  } catch (error) {
+    return { status: "error", message: "Categories not found!" };
+  }
+}
+
+export async function addNewCost(category_id, user_id, month, price) {
+  try {
+    const response = await axios.post("/costs/create", {});
+  } catch (error) {
+    return { status: "error", message: "Could not create new cost" };
+  }
+}

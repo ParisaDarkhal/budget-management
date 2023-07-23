@@ -13,10 +13,12 @@ import {
   FormLabel,
 } from "@mui/material";
 import { experimentalStyled as styled } from "@mui/material/styles";
-
-import React from "react";
 import Navbar from "../navbar/Navbar";
-import { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { getCategories } from "../../api/API";
+import { useAuth } from "../../hooks/Auth";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -25,25 +27,6 @@ const Item = styled(Paper)(({ theme }) => ({
   textAlign: "center",
   color: theme.palette.text.secondary,
 }));
-
-const categories = [
-  {
-    value: "Rent",
-    label: "Rent",
-  },
-  {
-    value: "Car Lease",
-    label: "Car Lease",
-  },
-  {
-    value: "Grocaries",
-    label: "Grocaries",
-  },
-  {
-    value: "Cloths",
-    label: "Cloths",
-  },
-];
 
 const months = [
   {
@@ -98,7 +81,26 @@ const months = [
 
 const NewCostAddition = () => {
   const [costPrice, setCostPrice] = useState(0);
+  const [category, setCategory] = useState("");
+  const [month, setMonth] = useState("");
+  const [allCategories, setAllCategories] = useState([]);
+  const [categoryId, setCategoryId] = useState(0);
 
+  useEffect(() => {
+    const getCats = async () => {
+      const d = await getCategories();
+      setAllCategories(d);
+    };
+    getCats();
+    // getCategories().then((res) => setAllCategories(res)); //this is another way to write the function above
+  }, []);
+
+  const categories = allCategories.map((item) => ({
+    value: item.id,
+    label: item.name,
+  }));
+
+  console.log("categoryId :>> ", categoryId);
   const handleSave = async () => {};
 
   return (
@@ -123,9 +125,15 @@ const NewCostAddition = () => {
           label="Select"
           defaultValue="Rent"
           helperText="Please select category"
+          value={category}
+          onChange={(event) => setCategory(event.target.value)}
         >
           {categories.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
+            <MenuItem
+              onChange={(event) => setCategoryId(option.value)}
+              key={option.value}
+              value={option.value}
+            >
               {option.label}
             </MenuItem>
           ))}
@@ -137,6 +145,8 @@ const NewCostAddition = () => {
           label="Select"
           defaultValue="January"
           helperText="Please select month"
+          value={month}
+          onChange={(event) => setMonth(event.target.value)}
         >
           {months.map((option) => (
             <MenuItem key={option.value} value={option.value}>
