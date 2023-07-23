@@ -11,8 +11,6 @@ import { experimentalStyled as styled } from "@mui/material/styles";
 import React, { useState, useEffect } from "react";
 import { getCategories, addNewCost } from "../../api/API";
 import { useAuth } from "../../hooks/Auth";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -73,7 +71,7 @@ const months = [
   },
 ];
 
-const NewCostAddition = () => {
+const NewCostAddition = ({ toast }) => {
   const [costPrice, setCostPrice] = useState(0);
   const [category, setCategory] = useState("");
   const [month, setMonth] = useState("");
@@ -106,27 +104,19 @@ const NewCostAddition = () => {
       const userId = user.id;
       const data = await addNewCost(categoryId, userId, month, costPrice);
       if (data.status === "success") {
-        toast.success("New cost saved!");
+        toast.success("New cost saved!", {
+          position: "bottom-right",
+        });
       } else if (data.status === "error") {
-        toast.error(data.message);
+        toast.error(data.message, {
+          position: "bottom-right",
+        });
       }
     } catch (error) {}
   };
 
   return (
     <>
-      <ToastContainer
-        position="bottom-center"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
       <Grid item xs={2} sm={4} md={4} boxShadow={5}>
         <Item sx={{ mr: 3 }}>
           <Typography variant="h5" gutterBottom>

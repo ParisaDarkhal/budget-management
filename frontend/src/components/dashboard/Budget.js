@@ -54,7 +54,7 @@ const Budget = () => {
         <Button
           variant="contained"
           onClick={handleSave}
-          style={{ height: 50, marginLeft: 10 }}
+          style={{ height: 50, marginLeft: 10, marginTop: 3 }}
         >
           Save
         </Button>

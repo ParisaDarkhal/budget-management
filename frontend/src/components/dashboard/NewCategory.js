@@ -16,8 +16,6 @@ import { experimentalStyled as styled } from "@mui/material/styles";
 import React from "react";
 import { useState } from "react";
 import { addNewCategory } from "../../api/API";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -27,7 +25,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const NewCategoryAddition = () => {
+const NewCategoryAddition = ({ toast }) => {
   const [category, setCategory] = useState("");
   const [categoryType, setCategoryType] = useState("");
 
@@ -35,27 +33,19 @@ const NewCategoryAddition = () => {
     try {
       const data = await addNewCategory(category, categoryType);
       if (data.status === "success") {
-        toast.success("Category saved!");
+        toast.success("Category saved!", {
+          position: "bottom-left",
+        });
       } else if (data.status === "error") {
-        toast.error(data.message);
+        toast.error(data.message, {
+          position: "bottom-left",
+        });
       }
     } catch (error) {}
   };
 
   return (
     <>
-      <ToastContainer
-        position="bottom-center"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
       <Grid item xs={2} sm={4} md={4} boxShadow={5}>
         <Item sx={{ mr: 3 }}>
           <Typography variant="h5" gutterBottom>

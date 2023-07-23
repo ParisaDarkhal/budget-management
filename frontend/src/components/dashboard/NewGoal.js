@@ -4,8 +4,7 @@ import { experimentalStyled as styled } from "@mui/material/styles";
 import React from "react";
 import { useState } from "react";
 import { addNewGoal } from "../../api/API";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import { useAuth } from "../../hooks/Auth";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -16,7 +15,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const NewGoalAddition = () => {
+const NewGoalAddition = ({ toast }) => {
   const [goal, setGoal] = useState("");
   const [goalPrice, setGoalPrice] = useState(null);
   const { user } = useAuth();
@@ -26,26 +25,18 @@ const NewGoalAddition = () => {
       const userId = user.id;
       const data = await addNewGoal(goal, goalPrice, userId);
       if (data.status === "success") {
-        toast.success("Goal saved!");
+        toast.success("Goal saved!", {
+          position: "bottom-center",
+        });
       } else if (data.status === "error") {
-        toast.error(data.message);
+        toast.error(data.message, {
+          position: "bottom-center",
+        });
       }
     } catch (error) {}
   };
   return (
     <>
-      <ToastContainer
-        position="bottom-center"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
       <Grid item xs={2} sm={4} md={4} boxShadow={5}>
         <Item sx={{ mr: 3 }}>
           <Typography variant="h5" gutterBottom>
