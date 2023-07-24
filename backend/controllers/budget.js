@@ -2,9 +2,9 @@ const router = require("express").Router();
 const { Budget, User } = require("../models");
 
 // get all budgets of a user for a specific month
-router.post("/budget", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
-    const userId = req.body.userId;
+    const userId = req.body.user_id;
     const month = req.body.month;
     const budgetByMonth = await Budget.findOne({
       where: {
@@ -24,7 +24,7 @@ router.post("/budget", async (req, res) => {
 });
 
 // create a budget for a user in a month
-router.post("/budget/create", async (req, res) => {
+router.post("/create", async (req, res) => {
   try {
     const newBudgetData = req.body;
     const newBudget = await Budget.create(newBudgetData);
@@ -40,10 +40,13 @@ router.post("/budget/create", async (req, res) => {
 });
 
 // update a budget
-router.post("/budget/update", async (req, res) => {
+router.post("/update/:id", async (req, res) => {
   try {
+    const budgetId = req.params.id;
     const updateData = req.body;
-    const updatedBudget = await Budget.update(updateData);
+    const updatedBudget = await Budget.update(updateData, {
+      where: { id: budgetId },
+    });
     if (!updatedBudget) {
       res.json({ message: "Some problem happened." });
     } else {
