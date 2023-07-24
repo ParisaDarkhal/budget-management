@@ -1,25 +1,8 @@
-import {
-  Box,
-  Typography,
-  Grid,
-  Button,
-  Paper,
-  TextField,
-  MenuItem,
-  Radio,
-  RadioGroup,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-} from "@mui/material";
+import { Box, Button, Paper, TextField, MenuItem } from "@mui/material";
 import { experimentalStyled as styled } from "@mui/material/styles";
 
 import React from "react";
-import Navbar from "../navbar/Navbar";
-import { useState, useContext } from "react";
-import NewCategoryAddition from "./NewCategory";
-import NewGoalAddition from "./NewGoal";
-import NewCostAddition from "./NewCost";
+import { useState } from "react";
 import { useAuth } from "../../hooks/Auth";
 import { addNewBudget } from "../../api/API";
 
