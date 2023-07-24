@@ -39,4 +39,19 @@ router.post("/budget/create", async (req, res) => {
   }
 });
 
+// update a budget
+router.post("/budget/update", async (req, res) => {
+  try {
+    const updateData = req.body;
+    const updatedBudget = await Budget.update(updateData);
+    if (!updatedBudget) {
+      res.json({ message: "Some problem happened." });
+    } else {
+      res.json({ message: "success" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server problem!" });
+  }
+});
 module.exports = router;
