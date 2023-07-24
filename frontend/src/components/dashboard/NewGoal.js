@@ -17,7 +17,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const NewGoalAddition = ({ toast }) => {
   const [goal, setGoal] = useState("");
-  const [goalPrice, setGoalPrice] = useState(null);
+  const [goalPrice, setGoalPrice] = useState(0.0);
   const { user } = useAuth();
 
   const handleSave = async (event) => {

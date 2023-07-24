@@ -20,6 +20,8 @@ import { useState, useContext } from "react";
 import NewCategoryAddition from "./NewCategory";
 import NewGoalAddition from "./NewGoal";
 import NewCostAddition from "./NewCost";
+import { useAuth } from "../../hooks/Auth";
+import { addNewBudget } from "../../api/API";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -80,9 +82,26 @@ const months = [
   },
 ];
 
-const Budget = () => {
+const Budget = ({ toast }) => {
+  const { user } = useAuth();
   const [month, setMonth] = useState("");
-  const handleSave = () => {};
+  const [budget, setBudget] = useState("");
+
+  const handleSave = async (event) => {
+    try {
+      const userId = user.id;
+      const data = await addNewBudget(userId, month, budget);
+      if (data.message === "success") {
+        toast.success(`Budget for {${month}} saved!`, {
+          position: "bottom-right",
+        });
+      } else if (data.message === "error") {
+        toast.error(data.message, {
+          position: "bottom-right",
+        });
+      }
+    } catch (error) {}
+  };
   return (
     <Box display={"flex"} mt={8} mb={3}>
       <Box component="form" m={2} noValidate autoComplete="off">
@@ -92,8 +111,8 @@ const Budget = () => {
           label="Budget"
           variant="filled"
           name="budget"
-          //   value={}
-          //   onChange={(event) => setGoal(event.target.value)}
+          value={budget}
+          onChange={(event) => setBudget(event.target.value)}
         />
 
         <TextField
@@ -101,6 +120,7 @@ const Budget = () => {
           select
           label="Month"
           defaultValue="January"
+          style={{ minWidth: 150 }}
           //   helperText="Please select month"
           value={month}
           onChange={(event) => setMonth(event.target.value)}
@@ -111,14 +131,7 @@ const Budget = () => {
             </MenuItem>
           ))}
         </TextField>
-        {/* <TextField
-          id="filled-basic"
-          label="Month"
-          variant="filled"
-          name="month"
-          //   value={goalPrice}
-          //   onChange={(event) => setGoalPrice(event.target.value)}
-        /> */}
+
         <Button
           variant="contained"
           onClick={handleSave}

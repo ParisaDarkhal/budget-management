@@ -22,8 +22,8 @@ const Dashboard = () => {
   return (
     <Box>
       <Navbar />
-      <Budget />
-      <Box sx={{ flexGrow: 1 }} mx={3}>
+      <Budget toast={toast} />
+      <Box mx={3}>
         <Grid
           container
           spacing={{ xs: 2, md: 3 }}
