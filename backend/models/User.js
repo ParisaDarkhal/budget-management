@@ -29,9 +29,6 @@ User.init(
       //   len: [8],
       // },
     },
-    budget: {
-      type: DataTypes.INTEGER,
-    },
   },
 
   {

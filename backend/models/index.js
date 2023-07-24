@@ -2,6 +2,7 @@ const User = require("./User");
 const Category = require("./Category");
 const Cost = require("./Cost");
 const Goal = require("./Goal");
+const Budget = require("./Budget");
 
 User.hasMany(Cost);
 Cost.belongsTo(User);
@@ -12,4 +13,7 @@ Cost.belongsTo(Category);
 User.hasMany(Goal);
 Goal.belongsTo(User);
 
-module.exports = { User, Category, Cost, Goal };
+User.hasMany(Budget);
+Budget.belongsTo(User);
+
+module.exports = { User, Category, Cost, Goal, Budget };
