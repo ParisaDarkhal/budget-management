@@ -13,7 +13,7 @@ router.post("/budget", async (req, res) => {
       },
     });
     if (!budgetByMonth) {
-      res.status(400).json({ message: "User not found." });
+      res.json({ message: "Some problem happened." });
     } else {
       res.json(budgetByMonth);
     }
@@ -22,3 +22,21 @@ router.post("/budget", async (req, res) => {
     res.status(500).json({ message: "Server Problem!" });
   }
 });
+
+// create a budget for a user in a month
+router.post("/budget/create", async (req, res) => {
+  try {
+    const newBudgetData = req.body;
+    const newBudget = await Budget.create(newBudgetData);
+    if (!newBudget) {
+      res.json({ message: "Some problem happened." });
+    } else {
+      res.json({ message: "success" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server problem!" });
+  }
+});
+
+module.exports = router;

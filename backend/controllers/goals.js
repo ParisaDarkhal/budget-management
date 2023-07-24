@@ -57,7 +57,7 @@ router.post("/create", async (req, res) => {
     const updateData = req.body;
     const newGoal = await Goal.create(updateData);
     if (!newGoal) {
-      res.json({ message: "Some problem happenned" });
+      res.json({ message: "Some problem happened" });
     } else {
       res.json({ status: "success" });
     }
