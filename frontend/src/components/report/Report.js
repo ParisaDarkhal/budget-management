@@ -5,6 +5,7 @@ import {
   Typography,
   TextField,
   MenuItem,
+  Button,
 } from "@mui/material";
 import { experimentalStyled as styled } from "@mui/material/styles";
 
@@ -13,6 +14,7 @@ import Navbar from "../navbar/Navbar";
 import { useState } from "react";
 import { useAuth } from "../../hooks/Auth";
 import { Chart } from "react-google-charts";
+import { reportCostsForMonth } from "../../api/API";
 
 // import Budget from "./Budget";
 // import { ToastContainer, toast } from "react-toastify";
@@ -77,17 +79,29 @@ const months = [
   },
 ];
 
-const data = [
-  ["Cost", "Amount"],
-  ["Rent", 400],
-  ["Grocaries", 350],
-  ["Car Lease", 300],
-  ["Cloths", 200],
-  ["Saving", 100],
-];
-
 const Report = () => {
   const [month, setMonth] = useState("");
+  const { user } = useAuth();
+  const [data, setData] = useState([]);
+  const handleShow = async (event) => {
+    try {
+      const userId = user.id;
+      const datafromDB = await reportCostsForMonth(userId, month);
+      transformData(datafromDB);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  console.log("dataafter :>> ", data);
+  const transformData = (items) => {
+    const newData = [["Category", "Amount"]];
+    for (let index = 0; index < items.length; index++) {
+      const CategoryName = items[index].category.name;
+      const totalAmountForCat = parseFloat(items[index].totalAmount);
+      newData.push([CategoryName, totalAmountForCat]);
+    }
+    setData(newData);
+  };
   const options = {
     title: `Costs for month of ${month}`,
   };
@@ -114,6 +128,13 @@ const Report = () => {
               </MenuItem>
             ))}
           </TextField>
+          <Button
+            variant="contained"
+            sx={{ my: 1, mx: 3 }}
+            onClick={handleShow}
+          >
+            Show
+          </Button>
         </Item>
         <Chart
           chartType="PieChart"

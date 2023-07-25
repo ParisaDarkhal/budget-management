@@ -1,5 +1,7 @@
 const router = require("express").Router();
-const { Cost, Category } = require("../models");
+const sequelize = require("../config/connection");
+const { Cost, Category, User } = require("../models");
+const { Op } = require("sequelize");
 
 // get all costs for a user in one specific category: 1-if not give month => for all times 2-if give month => for specific month (gets the request as a json object and returns an array) and includes the category data
 router.post("/users", async (req, res) => {
@@ -72,4 +74,25 @@ router.post("/create", async (req, res) => {
     res.status(500).json({ message: "Server problem!" });
   }
 });
+
+// get costs for a month for a user by category
+router.post("/report", async (req, res) => {
+  try {
+    const queryData = req.body;
+    const costMonthByCategory = await Cost.findAll({
+      attributes: [
+        "category_id",
+        "month",
+        [sequelize.fn("SUM", sequelize.col("amount")), "totalAmount"],
+      ],
+      where: { user_id: queryData.user_id, month: queryData.month },
+      include: [{ model: Category }],
+      group: ["category_id", "month"],
+    });
+    res.json(costMonthByCategory);
+  } catch (error) {
+    console.error(error);
+  }
+});
+
 module.exports = router;
