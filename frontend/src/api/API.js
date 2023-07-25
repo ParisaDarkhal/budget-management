@@ -98,7 +98,7 @@ export async function totalSaving(userId) {
 
 export async function getAllGoalsForUser(userId) {
   try {
-    const response = await axios.post(`/goals/goalByUserId/${userId}`);
+    const response = await axios.get(`/goals/goalByUserId/${userId}`);
     return response.data;
   } catch (error) {
     return { status: "error", message: "Could not get goals." };

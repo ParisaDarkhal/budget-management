@@ -86,8 +86,10 @@ const months = [
 const Report = () => {
   const [month, setMonth] = useState("");
   const { user } = useAuth();
-  console.log("user+++++ :>> ", user);
   const [data, setData] = useState([]);
+  const [userTotalSaving, setUserTotalSaving] = useState(0);
+  const [goals, setGoals] = useState([]);
+  const [acheivableGoals, setAcheivableGoals] = useState([]);
   const handleShow = async (event) => {
     try {
       const userId = user.id;
@@ -110,8 +112,6 @@ const Report = () => {
   const options = {
     title: `Costs for month of ${month}`,
   };
-  const [userTotalSaving, setUserTotalSaving] = useState(0);
-  const [goals, setGoals] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -122,17 +122,27 @@ const Report = () => {
 
         setUserTotalSaving(totalUserSaving);
         setGoals(userGoal);
-
-        console.log("userTotalSaving :>> ", userTotalSaving);
-        console.log("goals :>> ", goals);
       }
     };
 
     fetchData();
-
-    return () => {}; //i need to make the function to compare the saving and the goals price and return goals with price <= saving
   }, [user]);
+  useEffect(() => {
+    showAcheivableGoals();
+  }, [goals]);
 
+  const showAcheivableGoals = () => {
+    let newAcheivableGoals = [];
+    for (let index = 0; index < goals.length; index++) {
+      if (
+        parseFloat(goals[index].price) <=
+        parseFloat(userTotalSaving.totalAmount)
+      ) {
+        newAcheivableGoals.push(goals[index].name);
+      }
+    }
+    setAcheivableGoals(newAcheivableGoals);
+  }; //i need to make the function to compare the saving and the goals price and return goals with price <= saving
   return (
     <Box>
       <Navbar />
@@ -182,6 +192,11 @@ const Report = () => {
             <Typography variant="h6" gutterBottom>
               Now, your saving is enough to buy
             </Typography>
+            {acheivableGoals.map((item, index) => (
+              <Typography key={index} variant="h6" color={"#009688"}>
+                {item}
+              </Typography>
+            ))}
           </Item>
           <Item sx={{ mr: 0, mt: -2 }}>
             <Typography variant="h6" gutterBottom>
