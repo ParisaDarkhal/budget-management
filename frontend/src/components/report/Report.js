@@ -14,7 +14,11 @@ import Navbar from "../navbar/Navbar";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../hooks/Auth";
 import { Chart } from "react-google-charts";
-import { reportCostsForMonth, totalSaving } from "../../api/API";
+import {
+  reportCostsForMonth,
+  totalSaving,
+  getAllGoalsForUser,
+} from "../../api/API";
 
 // import Budget from "./Budget";
 // import { ToastContainer, toast } from "react-toastify";
@@ -82,6 +86,7 @@ const months = [
 const Report = () => {
   const [month, setMonth] = useState("");
   const { user } = useAuth();
+  console.log("user+++++ :>> ", user);
   const [data, setData] = useState([]);
   const handleShow = async (event) => {
     try {
@@ -106,12 +111,27 @@ const Report = () => {
     title: `Costs for month of ${month}`,
   };
   const [userTotalSaving, setUserTotalSaving] = useState(0);
+  const [goals, setGoals] = useState([]);
+
   useEffect(() => {
-    setUserTotalSaving(totalSaving());
-    //i need to set the list of goals for the user here too
+    const fetchData = async () => {
+      if (user) {
+        const userId = user.id;
+        const totalUserSaving = await totalSaving(userId);
+        const userGoal = await getAllGoalsForUser(userId);
+
+        setUserTotalSaving(totalUserSaving);
+        setGoals(userGoal);
+
+        console.log("userTotalSaving :>> ", userTotalSaving);
+        console.log("goals :>> ", goals);
+      }
+    };
+
+    fetchData();
 
     return () => {}; //i need to make the function to compare the saving and the goals price and return goals with price <= saving
-  }, []);
+  }, [user]);
 
   return (
     <Box>
@@ -166,7 +186,7 @@ const Report = () => {
           <Item sx={{ mr: 0, mt: -2 }}>
             <Typography variant="h6" gutterBottom>
               ☠️☠️☠️ Be carefull about your expenses! You have spent 80% of your
-              budget so far! ☠️☠️☠️
+              budget so far! ☠️☠️
             </Typography>
           </Item>
         </Grid>

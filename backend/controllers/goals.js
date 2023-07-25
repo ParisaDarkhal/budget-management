@@ -31,7 +31,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// get a goal by user_id
+// get goals by user_id
 router.get("/goalByUserId/:user_id", async (req, res) => {
   try {
     const userId = req.params.user_id;

@@ -52,17 +52,24 @@ export default function Navbar() {
           </Typography>
           <Box>
             {isAuthenticated ? (
-              <div>
-                <span>Welcome, {user.username}!</span>
-                <Button
-                  sx={{ ml: 5 }}
-                  href="/login"
-                  color="inherit"
-                  onClick={handleLogout}
-                >
-                  Log out
-                </Button>
-              </div>
+              <>
+                <div>
+                  <span>Welcome, {user.username}!</span>
+                  <Button
+                    sx={{ ml: 5 }}
+                    href="/login"
+                    color="inherit"
+                    onClick={handleLogout}
+                  >
+                    Log out
+                  </Button>
+                </div>
+                <div>
+                  <Button sx={{ ml: 5 }} href="/report" color="inherit">
+                    View Report
+                  </Button>
+                </div>
+              </>
             ) : (
               <div>
                 <Button href="/login" color="inherit">

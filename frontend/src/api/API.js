@@ -88,10 +88,19 @@ export async function reportCostsForMonth(userId, month) {
 export async function totalSaving(userId) {
   try {
     const response = await axios.post("/costs/saving", {
-      user_id: userId,
+      userId: userId,
     });
     return response.data;
   } catch (error) {
     return { status: "error", message: "Could not get total saving" };
+  }
+}
+
+export async function getAllGoalsForUser(userId) {
+  try {
+    const response = await axios.post(`/goals/goalByUserId/${userId}`);
+    return response.data;
+  } catch (error) {
+    return { status: "error", message: "Could not get goals." };
   }
 }
