@@ -69,7 +69,7 @@ export async function addNewBudget(userId, month, budget) {
     });
     return response.data;
   } catch (error) {
-    return { status: "error", message: "Could not create new cost" };
+    return { status: "error", message: "Could not add new budget" };
   }
 }
 
@@ -79,9 +79,19 @@ export async function reportCostsForMonth(userId, month) {
       user_id: userId,
       month: month,
     });
-    console.log("responseforReport :>> ", response.data);
     return response.data;
   } catch (error) {
-    return { status: "error", message: "Could not create new cost" };
+    return { status: "error", message: "Could not create report" };
+  }
+}
+
+export async function totalSaving(userId) {
+  try {
+    const response = await axios.post("/costs/saving", {
+      user_id: userId,
+    });
+    return response.data;
+  } catch (error) {
+    return { status: "error", message: "Could not get total saving" };
   }
 }

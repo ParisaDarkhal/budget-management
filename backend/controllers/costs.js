@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const sequelize = require("../config/connection");
 const { Cost, Category, User } = require("../models");
-const { Op } = require("sequelize");
+const { Op, where } = require("sequelize");
 
 // get all costs for a user in one specific category: 1-if not give month => for all times 2-if give month => for specific month (gets the request as a json object and returns an array) and includes the category data
 router.post("/users", async (req, res) => {
@@ -90,6 +90,26 @@ router.post("/report", async (req, res) => {
       group: ["category_id", "month"],
     });
     res.json(costMonthByCategory);
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+// get accumulative savings for a user
+router.post("/saving", async (req, res) => {
+  const queryData = req.body;
+  try {
+    const category = await Category.findOne({ where: { name: "saving" } });
+    const totalSaving = await Cost.findOne({
+      attributes: [
+        [sequelize.fn("SUM", sequelize.col("amount")), "totalAmount"],
+      ],
+      where: {
+        user_id: queryData.userId,
+        category_id: category.id,
+      },
+    });
+    res.json(totalSaving);
   } catch (error) {
     console.error(error);
   }
