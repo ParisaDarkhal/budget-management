@@ -60,8 +60,8 @@ To run the Budget Smart web application on your local machine, follow these step
 3. Install backend dependencies: `npm install`
 4. `cd ..`
 5. Install frontend dependencies: `cd frontend && npm install`
-6. Start the backend server: `npm run server`
-7. Start the frontend development server: `npm run client`
+6. Start the backend server: `cd backend node server.js `
+7. Start the frontend development server: `cd frontend npm start`
 
 ## Contribution
 
