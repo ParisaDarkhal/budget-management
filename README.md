@@ -42,11 +42,14 @@ Budget Smart is a web application designed to help users keep track of their exp
 
 ### Screenshots
 
-1. Dashboard
-   ![Dashboard](screenshots/dashboard.png)
+1. Registration
+   ![Registration](./frontend/public//images/signup.jpg)
 
-2. Report Page
-   ![Report Page](screenshots/report.png)
+2. Dashboard
+   ![Dashboard](./frontend/public/images/dashboard.jpg)
+
+3. Report Page
+   ![Report Page](./frontend/public/images/report.jpg)
 
 ## Getting Started
 

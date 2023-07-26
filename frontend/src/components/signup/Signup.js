@@ -84,7 +84,7 @@ export default function SignUp() {
           boxShadow={5}
           sx={{
             paddingX: 3,
-            marginTop: 2,
+            marginTop: 10,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
