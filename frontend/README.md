@@ -1,70 +1,69 @@
-# Getting Started with Create React App
+# Budget Smart - Expense Tracking and Goal Management Web Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Budget Smart is a web application designed to help users keep track of their expenses, control their budget, and achieve their financial goals. The project was developed as a means to improve skills in working with various technologies such as MYSQL, Sequelize, React, Material UI, Axios, React Google Charts, and React Toastify.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- User Sign Up and Login: New users can create an account by signing up and existing users can log into their accounts securely.
 
-### `npm start`
+- Dashboard: Upon logging in, each user is presented with a personalized dashboard that includes the following features:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+  1. Budget Tracking: Users can enter and save their budget for each month.
+  2. Cost Categories: Users can define and save categories for their expenses (e.g., groceries, rent, etc.).
+  3. Goals: Users can add and save their financial goals along with their respective prices.
+  4. Expenses: Users can add each cost based on the category, month, and price, and store this data in the database using MYSQL and Sequelize.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Report Page: The "View Report" button in the navigation bar directs users to the report page, where they can access the following information:
+  1. Monthly Expense Breakdown: A pie chart displays the costs and their percentages based on the chosen month. Users can hover over each segment to view the exact amount spent for that category.
+  2. Goal Progress: Users can check their savings and compare them with their goal prices, giving them an idea of which goals are achievable with their current savings.
+  3. Expense Alert: An alert is shown only when the user's expenditure exceeds 80% of their monthly budget, helping them stay on track with their spending.
 
-### `npm test`
+## Technologies Used
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Backend
 
-### `npm run build`
+- Node.js
+- Express.js
+- MYSQL
+- Sequelize
+- Bcrypt
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Frontend
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- React
+- Material UI
+- Axios
+- React Google Charts
+- React Toastify
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Screenshots and Video
 
-### `npm run eject`
+[Link to Video](https://example.com) - A video showcasing the functionalities of the Budget Smart web application.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Screenshots
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. Dashboard
+   ![Dashboard](screenshots/dashboard.png)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+2. Report Page
+   ![Report Page](screenshots/report.png)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Getting Started
 
-## Learn More
+To run the Budget Smart web application on your local machine, follow these steps:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. Clone the repository: `git clone https://github.com/parisadarkhal/budget-smart.git`
+2. Navigate to the project folder: `cd budget-smart/backend`
+3. Install backend dependencies: `npm install`
+4. `cd ..`
+5. Install frontend dependencies: `cd frontend && npm install`
+6. Start the backend server: `npm run server`
+7. Start the frontend development server: `npm run client`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Contribution
 
-### Code Splitting
+Contributions to the Budget Smart project are welcome. If you find any issues or have suggestions for improvements, please create a new issue or submit a pull request.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## License
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The Budget Smart project is open-source and available under the [MIT License](https://opensource.org/licenses/MIT). Feel free to use, modify, and distribute the code according to the terms of this license.
