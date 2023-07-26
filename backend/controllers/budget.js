@@ -6,6 +6,7 @@ router.post("/", async (req, res) => {
   try {
     const userId = req.body.user_id;
     const month = req.body.month;
+    console.log("month :>> ", month);
     const budgetByMonth = await Budget.findOne({
       where: {
         user_id: userId,

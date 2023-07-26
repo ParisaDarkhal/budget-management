@@ -53,8 +53,16 @@ export default function Navbar() {
           <Box>
             {isAuthenticated ? (
               <>
-                <div>
+                <Box>
                   <span>Welcome, {user.username}!</span>
+                  <Button
+                    href="/report"
+                    variant="contained"
+                    color="success"
+                    sx={{ marginLeft: 3 }}
+                  >
+                    View Report
+                  </Button>
                   <Button
                     sx={{ ml: 5 }}
                     href="/login"
@@ -63,12 +71,7 @@ export default function Navbar() {
                   >
                     Log out
                   </Button>
-                </div>
-                <div>
-                  <Button sx={{ ml: 5 }} href="/report" color="inherit">
-                    View Report
-                  </Button>
-                </div>
+                </Box>
               </>
             ) : (
               <div>

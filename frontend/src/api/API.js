@@ -104,3 +104,28 @@ export async function getAllGoalsForUser(userId) {
     return { status: "error", message: "Could not get goals." };
   }
 }
+
+export async function getAllCostForMonth(userId, month) {
+  try {
+    const response = await axios.post("/costs/monthlyCost", {
+      user_id: userId,
+      month: month,
+    });
+    console.log("respnse.data========= :>> ", response.data);
+    return response.data;
+  } catch (error) {
+    return { status: "error", message: "Could not get monthly cost." };
+  }
+}
+
+export async function getMonthlyBudget(userId, month) {
+  try {
+    const response = await axios.post("/budget", {
+      user_id: userId,
+      month: month,
+    });
+    return response.data;
+  } catch (error) {
+    return { status: "error", message: "Could not get monthly budget." };
+  }
+}

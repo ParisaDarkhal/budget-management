@@ -43,7 +43,6 @@ router.get("/goalByUserId/:user_id", async (req, res) => {
     if (!goalById) {
       res.status(400).json({ message: "User not found!" });
     } else {
-      console.log("goalById :>> ", goalById);
       res.json(goalById);
     }
   } catch (error) {

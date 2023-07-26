@@ -95,6 +95,25 @@ router.post("/report", async (req, res) => {
   }
 });
 
+// get all costs for a user in a month
+router.post("/monthlyCost", async (req, res) => {
+  try {
+    const queryData = req.body;
+    const monthlyCost = await Cost.findAll({
+      attributes: [
+        "user_id",
+        "month",
+        [sequelize.fn("SUM", sequelize.col("amount")), "totalAmount"],
+      ],
+      where: { user_id: queryData.user_id, month: queryData.month },
+      group: ["user_id", "month"],
+    });
+    res.json(monthlyCost);
+  } catch (error) {
+    console.error(error);
+  }
+});
+
 // get accumulative savings for a user
 router.post("/saving", async (req, res) => {
   const queryData = req.body;

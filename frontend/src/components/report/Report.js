@@ -6,6 +6,9 @@ import {
   TextField,
   MenuItem,
   Button,
+  Snackbar,
+  MuiAlert,
+  Alert,
 } from "@mui/material";
 import { experimentalStyled as styled } from "@mui/material/styles";
 
@@ -18,6 +21,8 @@ import {
   reportCostsForMonth,
   totalSaving,
   getAllGoalsForUser,
+  getMonthlyBudget,
+  getAllCostForMonth,
 } from "../../api/API";
 
 // import Budget from "./Budget";
@@ -90,11 +95,23 @@ const Report = () => {
   const [userTotalSaving, setUserTotalSaving] = useState(0);
   const [goals, setGoals] = useState([]);
   const [acheivableGoals, setAcheivableGoals] = useState([]);
+  const [monthlyBudget, setMonthlyBudget] = useState(0);
+  const [monthlyCost, setMonthlyCost] = useState(0);
+  const [treshold, setTreshold] = useState(false);
+
+  //////////
   const handleShow = async (event) => {
     try {
+      setTreshold(false);
       const userId = user.id;
       const datafromDB = await reportCostsForMonth(userId, month);
       transformData(datafromDB);
+      const thisMonthBudget = await getMonthlyBudget(userId, month);
+      const thisMonthCosts = await getAllCostForMonth(userId, month);
+
+      if (thisMonthBudget) setMonthlyBudget(thisMonthBudget.amount);
+      if (thisMonthCosts.length > 0)
+        setMonthlyCost(parseFloat(thisMonthCosts[0].totalAmount));
     } catch (error) {
       console.error(error);
     }
@@ -113,6 +130,8 @@ const Report = () => {
     title: `Costs for month of ${month}`,
   };
 
+  //////////////////
+
   useEffect(() => {
     const fetchData = async () => {
       if (user) {
@@ -127,6 +146,7 @@ const Report = () => {
 
     fetchData();
   }, [user]);
+
   useEffect(() => {
     showAcheivableGoals();
   }, [goals]);
@@ -142,7 +162,16 @@ const Report = () => {
       }
     }
     setAcheivableGoals(newAcheivableGoals);
-  }; //i need to make the function to compare the saving and the goals price and return goals with price <= saving
+  };
+  /////////////////
+
+  useEffect(() => {
+    const costThreshold = monthlyBudget * 0.8;
+    if (costThreshold > 0 && monthlyCost >= costThreshold) {
+      setTreshold(true);
+    }
+  }, [monthlyCost, monthlyBudget]);
+
   return (
     <Box>
       <Navbar />
@@ -193,16 +222,24 @@ const Report = () => {
               Now, your saving is enough to buy
             </Typography>
             {acheivableGoals.map((item, index) => (
-              <Typography key={index} variant="h6" color={"#009688"}>
+              <Typography
+                key={index}
+                variant="h6"
+                color={"#009688"}
+                align="left"
+                marginLeft={5}
+              >
                 {item}
               </Typography>
             ))}
           </Item>
           <Item sx={{ mr: 0, mt: -2 }}>
-            <Typography variant="h6" gutterBottom>
-              ☠️☠️☠️ Be carefull about your expenses! You have spent 80% of your
-              budget so far! ☠️☠️
-            </Typography>
+            {treshold && (
+              <Alert severity="warning">
+                ☠️☠️☠️ Be carefull about your expenses! You have spent 80% of
+                your budget so far! ☠️☠️
+              </Alert>
+            )}
           </Item>
         </Grid>
       </Grid>
